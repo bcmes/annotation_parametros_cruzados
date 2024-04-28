@@ -63,11 +63,6 @@ public class PermissionControlValidator implements ConstraintValidator<Permissio
         return isAccessPermitted(accessTokenCnpj, partnerData.integrationCnpj(), partnerData.automationCnpj());
     }
 
-    private static void customizeErrorMessage(ConstraintValidatorContext constraintValidatorContext, String errorMessage) {
-        constraintValidatorContext.disableDefaultConstraintViolation();
-        constraintValidatorContext.buildConstraintViolationWithTemplate(errorMessage).addConstraintViolation();
-    }
-
     private <T> T getParameterToObtainPartnersCnpj(Object[] objects ) {
         //verifica se o metodo informado existe na classe informada
         Optional<Method> annotatedMethod = Arrays.stream(typeClass.getMethods()).filter(method -> method.getName().equalsIgnoreCase(methodName)).findFirst();
@@ -101,15 +96,15 @@ public class PermissionControlValidator implements ConstraintValidator<Permissio
         return (T) objects[indexPositionOfMethodParameter];
     }
 
-    private Boolean isAccessPermitted(String accessTokenCnpj, String integrationCnpj, String automationCnpj) {
-        log.info("method=isAccessPermitted, message=accessTokenCnpj[{}], integrationCnpj[{}], automationCnpj[{}]", accessTokenCnpj, integrationCnpj, automationCnpj);
-        return accessTokenCnpj.equals(integrationCnpj) || accessTokenCnpj.equals(automationCnpj);
-    }
-
     private String getAccessTokenCnpj() {
         String headerAuthorizationValue = httpServletRequest.getHeader("Authorization");
         String accessToken = headerAuthorizationValue.substring(7);
         String accessTokenCnpj = tokenInformation.get(accessToken);
         return accessTokenCnpj;
+    }
+
+    private Boolean isAccessPermitted(String accessTokenCnpj, String integrationCnpj, String automationCnpj) {
+        log.info("method=isAccessPermitted, message=accessTokenCnpj[{}], integrationCnpj[{}], automationCnpj[{}]", accessTokenCnpj, integrationCnpj, automationCnpj);
+        return accessTokenCnpj.equals(integrationCnpj) || accessTokenCnpj.equals(automationCnpj);
     }
 }
