@@ -10,7 +10,7 @@ public interface PartnerDataBy<T> {
         return switch (typePermission) {
             case ONBOARDING -> partnerDataBy.stream().filter(e->e instanceof PartnerDataByOnboarding).findFirst().get();
             case ACCOUNT_ID -> partnerDataBy.stream().filter(e->e instanceof PartnerDataByAccountId).findFirst().get();
-            default -> null;
+            case NONE -> null;
         };
     }
 }
