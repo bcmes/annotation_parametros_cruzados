@@ -1,4 +1,4 @@
-package com.example.demo.annotation;
+package com.example.demo.annotation.crossparameter;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
@@ -11,10 +11,13 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @Target(METHOD)
 @Retention(RUNTIME)
-@Constraint(validatedBy = ConsistentParametersValidator.class)
-public @interface ConsistentParameters {
-    String message() default "Invalid";
+@Constraint(validatedBy = PermissionControlValidator.class)
+public @interface PermissionControl {
+    String message() default "the requester is not allowed to access the data entered.";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
-    Type value() default Type.NONE;
+    TypePermission value() default TypePermission.NONE;
+    Class<?> typeClass();
+    String methodName();
+    String parameterNameValidation();
 }
