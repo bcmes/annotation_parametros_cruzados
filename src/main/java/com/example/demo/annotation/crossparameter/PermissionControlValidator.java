@@ -77,7 +77,7 @@ public class PermissionControlValidator implements ConstraintValidator<Permissio
 
         //varifica se o parametro informado, existe no metodo
         Optional<Parameter> methodParameter = Arrays.stream(annotatedMethod.get().getParameters())
-                .filter(parameter -> parameter.getName().contains(parameterNameValidation))
+                .filter(parameter -> parameter.getName().equalsIgnoreCase(parameterNameValidation))
                 .findFirst();
 
         if (methodParameter.isEmpty()) {
